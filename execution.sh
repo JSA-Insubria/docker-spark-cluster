@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd scalabase
+./build.sh
+cd ..
+cd spark
+./build.sh
+cd ..
+cd hive
+./build.sh
+cd ..
+./cluster.sh deploy
