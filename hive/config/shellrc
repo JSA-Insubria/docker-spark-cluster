@@ -1,0 +1,22 @@
+export LD_LIBRARY_PATH=/home/hadoop/hadoop/lib/native:$LD_LIBRARY_PATH
+
+export JAVA_HOME=/usr/local/openjdk-8
+
+export HDFS_NAMENODE_USER=hadoop
+export HDFS_DATANODE_USER=hadoop
+export HDFS_SECONDARYNAMENODE_USER=hadoop
+export HADOOP_HOME=/home/hadoop/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export HADOOP_HDFS_HOME=${HADOOP_HOME}
+export YARN_HOME=${HADOOP_HOME}
+
+export SPARK_DIST_CLASSPATH=$(hadoop classpath)
+export SPARK_HOME=/home/hadoop/spark
+export PATH=$PATH:SPARK_HOME/bin
+
+export HIVE_HOME=/home/hadoop/hive
+export PATH=$PATH:$HIVE_HOME/bin
