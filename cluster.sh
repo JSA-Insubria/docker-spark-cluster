@@ -55,8 +55,10 @@ if [[ $1 = "deploy" ]]; then
   # Format nodemaster
   echo ">> Formatting hdfs ..."
   docker exec -u hadoop -it nodemaster hadoop/bin/hdfs namenode -format
-  docker exec -u hadoop -it nodemaster /home/hadoop/hive-setting.sh
   startServices
+  echo ">> Setting Hive ..."
+  docker exec nodemaster chmod 777 /home/hadoop/hive-setting.sh
+  docker exec -u hadoop -it nodemaster /home/hadoop/hive-setting.sh
   exit
 fi
 
