@@ -5,18 +5,30 @@
   <property>
     <name>mapreduce.framework.name</name>
     <value>yarn</value>
-  </property>     
+  </property>
+<property>
+<name>yarn.app.mapreduce.am.env</name>
+<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
+<property>
+<name>mapreduce.map.env</name>
+<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
+<property>
+<name>mapreduce.reduce.env</name>
+<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+</property>
   <property>
     <name>mapreduce.job.tracker</name>
     <value>nodemaster:9001</value>
   </property>    
   <property>
           <name>yarn.nodemanager.resource.memory-mb</name>
-          <value>1536</value>
+          <value>3072</value>
   </property>
   <property>
           <name>yarn.scheduler.maximum-allocation-mb</name>
-          <value>1536</value>
+          <value>3072</value>
   </property>
   <property>
           <name>yarn.scheduler.minimum-allocation-mb</name>
