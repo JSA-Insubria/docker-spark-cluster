@@ -41,12 +41,13 @@ fi
 
 if [[ $1 = "deploy" ]]; then
   docker rm -f `docker ps -a | grep sparkbase | awk '{ print $1 }'` # delete old containers
+  docker rm -f `docker ps -a | grep hivebase | awk '{ print $1 }'` # delete old containers
   docker network rm sparknet
   docker network create --driver bridge sparknet # create custom network
 
   # 3 nodes
   echo ">> Starting nodes master and worker nodes ..."
-  docker run -dP --network sparknet --name nodemaster -h nodemaster -it sparkbase
+  docker run -dP --network sparknet --name nodemaster -h nodemaster -it hivebase
   docker run -dP --network sparknet --name node2 -it -h node2 sparkbase
   docker run -dP --network sparknet --name node3 -it -h node3 sparkbase
   docker run -dP --network sparknet --name node4 -it -h node4 sparkbase
@@ -54,6 +55,7 @@ if [[ $1 = "deploy" ]]; then
   # Format nodemaster
   echo ">> Formatting hdfs ..."
   docker exec -u hadoop -it nodemaster hadoop/bin/hdfs namenode -format
+  docker exec -u hadoop -it nodemaster /home/hadoop/hive-setting.sh
   startServices
   exit
 fi
