@@ -18,4 +18,5 @@ RUN rm /home/hadoop/.profile
 COPY config/shellrc /home/hadoop/.bashrc
 COPY config/shellrc /home/hadoop/.profile
 
+USER root
 CMD service ssh start && sleep infinity
