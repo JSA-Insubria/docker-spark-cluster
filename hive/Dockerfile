@@ -3,10 +3,12 @@ FROM sparkbase:latest
 USER hadoop
 WORKDIR /home/hadoop
 
-RUN wget http://mirror.nohup.it/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz
+ENV HIVE_VERSION=${HIVE_VERSION:-3.1.2}
 
-RUN tar -zxf apache-hive-3.1.2-bin.tar.gz && \
-    mv apache-hive-3.1.2-bin hive && rm *gz
+RUN wget http://mirror.nohup.it/apache/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz
+
+RUN tar -zxf apache-hive-$HIVE_VERSION-bin.tar.gz && \
+    mv apache-hive-$HIVE_VERSION-bin hive && rm *gz
 
 COPY config/hive-site.xml /home/hadoop/hive/conf/
 RUN rm /home/hadoop/hive/lib/guava-19.0.jar
