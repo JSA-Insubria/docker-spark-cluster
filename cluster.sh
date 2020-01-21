@@ -2,7 +2,7 @@
 
 # Bring the services up
 function startServices {
-  docker start nodemaster node2 node3 node4
+  docker start nodemaster node2 node3 node4 node5 node6
   sleep 5
   echo ">> Starting hdfs ..."
   docker exec -u hadoop -it nodemaster hadoop/sbin/start-dfs.sh
@@ -15,6 +15,8 @@ function startServices {
   docker exec -u hadoop -d node2 /home/hadoop/sparkcmd.sh start
   docker exec -u hadoop -d node3 /home/hadoop/sparkcmd.sh start
   docker exec -u hadoop -d node4 /home/hadoop/sparkcmd.sh start
+  docker exec -u hadoop -d node5 /home/hadoop/sparkcmd.sh start
+  docker exec -u hadoop -d node6 /home/hadoop/sparkcmd.sh start
   show_info
 }
 
@@ -35,7 +37,9 @@ if [[ $1 = "stop" ]]; then
   docker exec -u hadoop -d node2 /home/hadoop/sparkcmd.sh stop
   docker exec -u hadoop -d node3 /home/hadoop/sparkcmd.sh stop
   docker exec -u hadoop -d node4 /home/hadoop/sparkcmd.sh stop
-  docker stop nodemaster node2 node3 node4
+  docker exec -u hadoop -d node5 /home/hadoop/sparkcmd.sh stop
+  docker exec -u hadoop -d node6 /home/hadoop/sparkcmd.sh stop
+  docker stop nodemaster node2 node3 node4 node5 node6
   exit
 fi
 
@@ -51,6 +55,8 @@ if [[ $1 = "deploy" ]]; then
   docker run -dP --network sparknet --name node2 -it -h node2 sparkbase
   docker run -dP --network sparknet --name node3 -it -h node3 sparkbase
   docker run -dP --network sparknet --name node4 -it -h node4 sparkbase
+  docker run -dP --network sparknet --name node5 -it -h node5 sparkbase
+  docker run -dP --network sparknet --name node6 -it -h node6 sparkbase
 
   # Format nodemaster
   echo ">> Formatting hdfs ..."

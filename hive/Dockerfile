@@ -5,7 +5,13 @@ WORKDIR /home/hadoop
 
 ENV HIVE_VERSION=${HIVE_VERSION:-3.1.2}
 
+#For Test
+#ENV HIVE_VERSION=${HIVE_VERSION:-4.0.0-SNAPSHOT} 
+
 RUN wget http://mirror.nohup.it/apache/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz
+
+#For Test
+#COPY config/apache-hive-4.0.0-SNAPSHOT-bin.tar.gz /home/hadoop/apache-hive-4.0.0-SNAPSHOT-bin.tar.gz
 
 RUN tar -zxf apache-hive-$HIVE_VERSION-bin.tar.gz && \
     mv apache-hive-$HIVE_VERSION-bin hive && rm *gz
