@@ -4,7 +4,7 @@
 <configuration>                                                                                                                                         
   <property>
     <name>mapreduce.framework.name</name>
-    <value>yarn</value>
+    <value>yarn-tez</value>
   </property>
 <property>
 <name>yarn.app.mapreduce.am.env</name>

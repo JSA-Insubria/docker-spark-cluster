@@ -14,9 +14,25 @@ export HADOOP_COMMON_HOME=${HADOOP_HOME}
 export HADOOP_HDFS_HOME=${HADOOP_HOME}
 export YARN_HOME=${HADOOP_HOME}
 
+
 export SPARK_DIST_CLASSPATH=$(hadoop classpath)
 export SPARK_HOME=/home/hadoop/spark
 export PATH=$PATH:SPARK_HOME/bin
 
+
 export HIVE_HOME=/home/hadoop/hive
 export PATH=$PATH:$HIVE_HOME/bin
+
+
+export TEZ_HOME=/home/hadoop/tez
+export TEZ_CONF_DIR=$TEZ_HOME/conf
+export TEZ_JARS=$TEZ_HOME
+
+if [ -z "$HIVE_AUX_JARS_PATH" ]; then
+export HIVE_AUX_JARS_PATH="$TEZ_JARS"
+else
+export HIVE_AUX_JARS_PATH="$HIVE_AUX_JARS_PATH:$TEZ_JARS"
+fi
+
+export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}/*:${TEZ_JARS}/lib/*
+

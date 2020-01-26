@@ -5613,6 +5613,26 @@
       and is deprecated in Hive 2 line. It may be removed without further warning.
     </description>
   </property>
+<property>
+    <name>spark.master</name>
+    <value>spark://master:7077</value>
+  </property>
+<property>
+    <name>spark.eventLog.enabled</name>
+    <value>true</value>
+  </property>
+<property>
+    <name>spark.eventLog.dir</name>
+    <value>/tmp</value>
+  </property>
+<property>
+    <name>spark.executor.memory</name>
+    <value>512m</value>
+  </property>
+<property>
+  <name>spark.serializer</name>
+  <value>org.apache.spark.serializer.KryoSerializer</value>
+</property>
   <property>
     <name>hive.execution.mode</name>
     <value>container</value>
