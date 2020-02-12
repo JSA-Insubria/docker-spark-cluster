@@ -51,7 +51,7 @@ if [[ $1 = "deploy" ]]; then
 
   # 3 nodes
   echo ">> Starting nodes master and worker nodes ..."
-  docker run -dP --network sparknet --name nodemaster -h nodemaster -it hivebase
+  docker run -dP -p 10000:10000 --network sparknet --name nodemaster -h nodemaster -it hivebase
   docker run -dP --network sparknet --name node2 -it -h node2 sparkbase
   docker run -dP --network sparknet --name node3 -it -h node3 sparkbase
   docker run -dP --network sparknet --name node4 -it -h node4 sparkbase
