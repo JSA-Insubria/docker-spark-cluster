@@ -5,11 +5,10 @@ EXPOSE 10000
 USER hadoop
 WORKDIR /home/hadoop
 
-ENV HIVE_VERSION=${HIVE_VERSION:-3.1.3}
+ENV HIVE_VERSION=${HIVE_VERSION:-3.1.2}
 
-#RUN wget http://mirror.nohup.it/apache/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz
-
-COPY config/apache-hive-$HIVE_VERSION-bin.tar.gz /home/hadoop/apache-hive-$HIVE_VERSION-bin.tar.gz
+RUN wget http://mirror.nohup.it/apache/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz
+#COPY config/apache-hive-$HIVE_VERSION-bin.tar.gz /home/hadoop/apache-hive-$HIVE_VERSION-bin.tar.gz
 
 RUN tar -zxf apache-hive-$HIVE_VERSION-bin.tar.gz && \
     mv apache-hive-$HIVE_VERSION-bin hive
