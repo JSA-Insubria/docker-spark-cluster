@@ -14,11 +14,14 @@ RUN useradd -m -s /bin/bash hadoop
 WORKDIR /home/hadoop
 
 USER hadoop
-RUN  wget https://archive.apache.org/dist/hadoop/core/hadoop-3.2.0/hadoop-3.2.0.tar.gz
-RUN  wget https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-without-hadoop.tgz
+RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/hadoop-3.2.1.tar.gz
+#COPY config/hadoop-3.2.1.tar.gz /home/hadoop/hadoop-3.2.1.tar.gz
 
-RUN tar -zxf hadoop-3.2.0.tar.gz && \
-    mv hadoop-3.2.0 hadoop && \
+RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/spark-2.4.0-bin-without-hadoop.tgz
+#COPY config/spark-2.4.0-bin-without-hadoop.tgz /home/hadoop/spark-2.4.0-bin-without-hadoop.tgz
+
+RUN tar -zxf hadoop-3.2.1.tar.gz && \
+    mv hadoop-3.2.1 hadoop && \
     tar -zxf spark-2.4.0-bin-without-hadoop.tgz && \
     mv spark-2.4.0-bin-without-hadoop spark &&  rm *gz
 

@@ -11,8 +11,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends openssh-server vim
 
 WORKDIR /tmp
-RUN wget https://downloads.lightbend.com/scala/2.12.5/scala-2.12.5.tgz && \
-    tar xzf scala-2.12.5.tgz && \
+COPY config/scala-2.12.5.tgz scala-2.12.5.tgz
+RUN tar xzf scala-2.12.5.tgz && \
     mv scala-2.12.5 /usr/share/scala && \
     ln -s /usr/share/scala/bin/* /usr/bin && \ 
     rm scala-2.12.5.tgz && \
