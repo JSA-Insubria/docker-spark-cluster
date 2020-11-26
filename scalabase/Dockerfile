@@ -14,10 +14,9 @@ WORKDIR /tmp
 COPY config/scala-2.12.5.tgz scala-2.12.5.tgz
 RUN tar xzf scala-2.12.5.tgz && \
     mv scala-2.12.5 /usr/share/scala && \
-    ln -s /usr/share/scala/bin/* /usr/bin && \ 
+    ln -s /usr/share/scala/bin/* /usr/bin && \
     rm scala-2.12.5.tgz && \
-\
-    echo "PubkeyAuthentication yes" >> /etc/ssh/ssh_config && \
-    echo "Host *" >> /etc/ssh/ssh_config
+    echo "Host *" > /etc/ssh/ssh_config && \
+    echo "PubkeyAuthentication yes" >> /etc/ssh/ssh_config
 
 CMD service ssh start && sleep infinity
