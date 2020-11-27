@@ -23,25 +23,22 @@ RUN wget http://archive.apache.org/dist/hadoop/core/hadoop-3.2.1/hadoop-3.2.1.ta
 
 RUN mkdir -p /home/hadoop/.ssh /home/hadoop/hadoop/logs \
     touch /home/hadoop/hadoop/logs/fairscheduler-statedump.log
-#    /home/hadoop/data/nameNode /home/hadoop/data/dataNode \
-#    /home/hadoop/data/namesecondary /home/hadoop/data/tmp && \
 
-# We don't care about the skeleton rc files, so overwrite
 COPY config/shellrc /home/hadoop/.bashrc
 COPY config/shellrc /home/hadoop/.profile
 COPY config/id_rsa* /home/hadoop/.ssh/
 COPY config/id_rsa.pub  /home/hadoop/.ssh/authorized_keys
-#COPY config/workers /home/hadoop/spark/conf/slaves
 COPY config/sparkcmd.sh config/hadoop-env.sh /home/hadoop/
 
 COPY config/core-site.xml config/hdfs-site.xml config/mapred-site.xml \
     config/yarn-site.xml /home/hadoop/hadoop/etc/hadoop/
 
+
 RUN cat /home/hadoop/hadoop-env.sh >> /home/hadoop/hadoop/etc/hadoop/hadoop-env.sh
 
 USER root
-
-RUN mkdir /home/hadoop/data && chown -R hadoop /home/hadoop/.ssh /home/hadoop/.bashrc /home/hadoop/.profile /home/hadoop/data /home/hadoop/hadoop-env.sh
+RUN chmod -R 600 /home/hadoop/.ssh
+RUN chown -R hadoop /home/hadoop
 
 #ENTRYPOINT ["/home/hadoop/sparkcmd.sh","start"]
 CMD service ssh start && sleep infinity
