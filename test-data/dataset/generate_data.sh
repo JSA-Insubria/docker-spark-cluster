@@ -1,7 +1,9 @@
 #!/bin/bash
 
+N=$1
+
 cd 2.18.0_rc2/dbgen
-./dbgen -s 5
+./dbgen -s $N
 
 #Move .tbl in data folder
 mv part.tbl ../../part.tbl
