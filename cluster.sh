@@ -83,8 +83,8 @@ if [[ $1 = "deploy" ]]; then
 		-v $PWD/config/hadoop_config:/home/hadoop/hadoop/etc/hadoop:z \
 		-v $PWD/config/hive_config:/home/hadoop/hive/conf:z \
 		-v $PWD/test-data:/home/hadoop/test-data:z \
-#		-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/hivebase
 		-it hivebase
+#		-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/hivebase
 
 	docker exec -it nodemaster chown -R hadoop /home/hadoop/data
 	docker exec -it nodemaster chmod -R 777 /home/hadoop/data
@@ -102,8 +102,8 @@ if [[ $1 = "deploy" ]]; then
 			-v $PWD/results/node$i:/home/hadoop/results \
 			-v $PWD/config/spark_config:/home/hadoop/spark:z \
 			-v $PWD/config/hadoop_config:/home/hadoop/hadoop/etc/hadoop:z \
-#			-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/sparkbase
 			-it sparkbase
+#			-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/sparkbase
 
 		docker exec -it node$i chown -R hadoop /home/hadoop/data
 		docker exec -it node$i chmod -R 777 /home/hadoop/data
