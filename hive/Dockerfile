@@ -1,3 +1,4 @@
+#FROM res-drl-docker-local.artifactory.swg-devops.com/database-testing/sparkbase:latest
 FROM sparkbase:latest
 
 EXPOSE 10000
@@ -7,16 +8,16 @@ WORKDIR /home/hadoop
 
 ENV HIVE_VERSION=${HIVE_VERSION:-3.1.3}
 
-RUN wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/apache-hive-3.1.3-bin.tar.gz
-#COPY config/apache-hive-$HIVE_VERSION-bin.tar.gz /home/hadoop/apache-hive-$HIVE_VERSION-bin.tar.gz
+#RUN wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/apache-hive-3.1.3-bin.tar.gz
+COPY config/apache-hive-$HIVE_VERSION-bin.tar.gz /home/hadoop/apache-hive-$HIVE_VERSION-bin.tar.gz
 
 RUN tar -zxf apache-hive-$HIVE_VERSION-bin.tar.gz && \
     mv apache-hive-$HIVE_VERSION-bin hive
 
 WORKDIR /home/hadoop
 
-COPY config/hive-site.xml /home/hadoop/hive/conf/
-COPY config/hive-env.sh /home/hadoop/hive/conf/
+#COPY config/hive-site.xml /home/hadoop/hive/conf/
+#COPY config/hive-env.sh /home/hadoop/hive/conf/
 RUN rm /home/hadoop/hive/lib/guava-19.0.jar
 COPY config/guava-27.0-jre.jar /home/hadoop/hive/lib/
 

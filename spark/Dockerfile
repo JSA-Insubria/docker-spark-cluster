@@ -1,5 +1,4 @@
-
-
+#FROM res-drl-docker-local.artifactory.swg-devops.com/database-testing/scalabase:latest
 FROM scalabase:latest
 
 EXPOSE 8081
@@ -14,11 +13,11 @@ RUN useradd -m -s /bin/bash hadoop
 WORKDIR /home/hadoop
 
 USER hadoop
-RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/hadoop-3.2.1.tar.gz
-#COPY config/hadoop-3.2.1.tar.gz /home/hadoop/hadoop-3.2.1.tar.gz
+#RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/hadoop-3.2.1.tar.gz
+COPY config/hadoop-3.2.1.tar.gz /home/hadoop/hadoop-3.2.1.tar.gz
 
-RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/spark-2.4.0-bin-without-hadoop.tgz
-#COPY config/spark-2.4.0-bin-without-hadoop.tgz /home/hadoop/spark-2.4.0-bin-without-hadoop.tgz
+#RUN  wget https://storage.googleapis.com/staging.cloudproject-feffa.appspot.com/spark-2.4.0-bin-without-hadoop.tgz
+COPY config/spark-2.4.0-bin-without-hadoop.tgz /home/hadoop/spark-2.4.0-bin-without-hadoop.tgz
 
 RUN tar -zxf hadoop-3.2.1.tar.gz && \
     mv hadoop-3.2.1 hadoop && \
@@ -35,15 +34,15 @@ COPY config/shellrc /home/hadoop/.bashrc
 COPY config/shellrc /home/hadoop/.profile
 COPY config/id_rsa* /home/hadoop/.ssh/
 COPY config/id_rsa.pub  /home/hadoop/.ssh/authorized_keys
-COPY config/workers /home/hadoop/spark/conf/slaves
+#COPY config/workers /home/hadoop/spark/conf/slaves
 COPY config/sparkcmd.sh /home/hadoop/
 COPY config/hadoop-env.sh /home/hadoop/
 
-COPY config/core-site.xml config/hdfs-site.xml config/mapred-site.xml \
-    config/yarn-site.xml config/workers /home/hadoop/hadoop/etc/hadoop/
+#COPY config/core-site.xml config/hdfs-site.xml config/mapred-site.xml \
+#    config/yarn-site.xml config/workers /home/hadoop/hadoop/etc/hadoop/
 
 USER hadoop
-RUN cat /home/hadoop/hadoop-env.sh >> /home/hadoop/hadoop/etc/hadoop/hadoop-env.sh
+#RUN cat /home/hadoop/hadoop-env.sh >> /home/hadoop/hadoop/etc/hadoop/hadoop-env.sh
 
 USER root
 RUN chown -R hadoop /home/hadoop/.ssh /home/hadoop/.bashrc /home/hadoop/.profile \

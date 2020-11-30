@@ -1,0 +1,49 @@
+<?xml version="1.0"?>                                                                                                                                   
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>                                                                                             
+
+<configuration>                                                                                                                                         
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn</value>
+	</property>
+	<property>
+		<name>yarn.app.mapreduce.am.env</name>
+		<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+	</property>
+	<property>
+		<name>mapreduce.map.env</name>
+		<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+	</property>
+	<property>
+		<name>mapreduce.reduce.env</name>
+		<value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+	</property>
+	<property>
+		<name>mapreduce.job.tracker</name>
+		<value>nodemaster:9001</value>
+	</property>    
+	<!-- 
+	Amount of physical memory, in MB, that can be allocated for containers.
+	It means the amount of memory YARN can utilize on this node and therefore
+	this property should be lower than the total memory of that machine.
+	-->
+	<property>
+		<name>yarn.nodemanager.resource.memory-mb</name>
+		<value>2048</value>
+	</property>
+	<!-- the maximum memory allocation available for a container in MB -->
+	<property>
+		<name>yarn.scheduler.maximum-allocation-mb</name>
+		<value>2048</value>
+	</property>
+
+	<!-- the minimum unit of RAM to allocate for a Container -->
+	<property>
+		<name>yarn.scheduler.minimum-allocation-mb</name>
+		<value>128</value>
+	</property>
+	<property>
+		<name>yarn.nodemanager.vmem-check-enabled</name>
+		<value>false</value>
+	</property>                                                                                                                              
+</configuration>

@@ -1,12 +1,24 @@
 #!/bin/bash
 
-firstNode=2
-lastNode=19
+NNODE = 0
+
+function setNodes {
+	NNODE=$([ $# -eq 1 ] && echo "$1" || echo "5")
+
+	echo $NNODE
+
+	rm config/hadoop_config/workers
+	rm config/spark_config/slaves
+	for i in $(seq -w 2 $NNODE); do
+		echo node$i >> config/hadoop_config/workers
+		echo node$i >> config/spark_config/slaves
+	done
+}
 
 # Bring the services up
 function startServices {
 	docker start nodemaster
-	for (( i=$firstNode; i<=$lastNode; i++ )) do
+	for i in $(seq -w 2 $NNODE); do
 		docker start node$i
 	done
 	sleep 5
@@ -18,7 +30,7 @@ function startServices {
 	sleep 5
 	echo ">> Starting Spark ..."
 	docker exec -u hadoop -d nodemaster /home/hadoop/sparkcmd.sh start
-	for (( i=$firstNode; i<=$lastNode; i++ )) do
+	for i in $(seq -w 2 $NNODE); do
 		docker exec -u hadoop -d node$i /home/hadoop/sparkcmd.sh start
 	done
 	show_info
@@ -37,12 +49,12 @@ if [[ $1 = "start" ]]; then
 fi
 
 if [[ $1 = "stop" ]]; then
-docker exec -u hadoop -d nodemaster /home/hadoop/sparkcmd.sh stop
-	for (( i=$firstNode; i<=$lastNode; i++ )) do
+	docker exec -u hadoop -d nodemaster /home/hadoop/sparkcmd.sh stop
+	for i in $(seq -w 2 $NNODE); do
 		docker exec -u hadoop -d node$i /home/hadoop/sparkcmd.sh stop
 	done
 	docker stop nodemaster
-	for (( i=$firstNode; i<=$lastNode; i++ )) do
+	for i in $(seq -w 2 $NNODE); do
 		docker stop node$i
 	done
 	exit
@@ -51,14 +63,54 @@ fi
 if [[ $1 = "deploy" ]]; then
 	docker rm -f `docker ps -a | grep sparkbase | awk '{ print $1 }'` # delete old containers
 	docker rm -f `docker ps -a | grep hivebase | awk '{ print $1 }'` # delete old containers
+	
+	# Deploy Network
 	docker network rm sparknet
 	docker network create --driver bridge sparknet # create custom network
-
+	
+	setNodes
+	
 	echo ">> Starting nodes master and worker nodes ..."
-	docker run -dP -p 10000:10000 --network sparknet --name nodemaster -h nodemaster -it hivebase
-	for (( i=$firstNode; i<=$lastNode; i++ )) do
-		docker run -dP --network sparknet --name node$i -it -h node$i sparkbase
+	# Deploy NodeMaster
+	mkdir -p $PWD/tests/nodemaster
+	mkdir -p $PWD/results/namenode
+	docker run -dP -p 10000:10000 --network sparknet \
+		--name nodemaster \
+		-h nodemaster \
+		-v $PWD/tests/nodemaster:/home/hadoop/data \
+		-v $PWD/results:/home/hadoop/results \
+		-v $PWD/config/spark_config:/home/hadoop/spark:z \
+		-v $PWD/config/hadoop_config:/home/hadoop/hadoop/etc/hadoop:z \
+		-v $PWD/config/hive_config:/home/hadoop/hive/conf:z \
+		-v $PWD/test-data:/home/hadoop/test-data:z \
+#		-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/hivebase
+		-it hivebase
+
+	docker exec -it nodemaster chown -R hadoop /home/hadoop/data
+	docker exec -it nodemaster chmod -R 777 /home/hadoop/data
+	docker exec -it nodemaster chown -R hadoop /home/hadoop/results
+	docker exec -it nodemaster chmod -R 777 /home/hadoop/results
+	
+	# Deploy Nodes
+	for i in $(seq -w 2 $NNODE); do
+		mkdir -p $PWD/tests/node$i
+		mkdir -p $PWD/results/node$i
+		docker run -dP --network sparknet \
+			--name node$i \
+			-h node$i \
+			-v $PWD/tests/node$i:/home/hadoop/data \
+			-v $PWD/results/node$i:/home/hadoop/results \
+			-v $PWD/config/spark_config:/home/hadoop/spark:z \
+			-v $PWD/config/hadoop_config:/home/hadoop/hadoop/etc/hadoop:z \
+#			-it res-drl-docker-local.artifactory.swg-devops.com/database-testing/sparkbase
+			-it sparkbase
+
+		docker exec -it node$i chown -R hadoop /home/hadoop/data
+		docker exec -it node$i chmod -R 777 /home/hadoop/data
+		docker exec -it node$i chown -R hadoop /home/hadoop/results
+		docker exec -it node$i chmod -R 777 /home/hadoop/results
 	done
+	
 	# Format nodemaster
 	echo ">> Formatting hdfs ..."
 	docker exec -u hadoop -it nodemaster hadoop/bin/hdfs namenode -format
