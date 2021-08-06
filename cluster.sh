@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NNODE = 0
+NNODE=0
 
 function setNodes {
 	NNODE=$([ $# -eq 1 ] && echo "$1" || echo "5")
