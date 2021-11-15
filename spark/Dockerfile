@@ -47,5 +47,7 @@ USER hadoop
 USER root
 RUN chown -R hadoop /home/hadoop/.ssh /home/hadoop/.bashrc /home/hadoop/.profile \
     /home/hadoop/data /home/hadoop/hadoop-env.sh
+    
+RUN chmod 400 /home/hadoop/.ssh/authorized_keys
 #ENTRYPOINT ["/home/hadoop/sparkcmd.sh","start"]
 CMD service ssh start && sleep infinity
