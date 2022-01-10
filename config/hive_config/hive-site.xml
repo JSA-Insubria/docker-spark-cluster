@@ -5615,7 +5615,7 @@
   </property>
 <property>
     <name>spark.master</name>
-    <value>spark://nodemaster:7077</value>
+    <value>yarn</value>
   </property>
 <property>
     <name>spark.eventLog.enabled</name>
